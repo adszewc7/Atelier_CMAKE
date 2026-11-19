@@ -27,4 +27,31 @@ jobs:
       - run: cd build && ctest -R "^t2$" --output-on-failure
 
   Test_Mul:
-    needs:
+    needs: Compilation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build && cmake --build build
+      - run: cd build && ctest -R "^t3$" --output-on-failure
+
+  Test_Div:
+    needs: Compilation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build && cmake --build build
+      - run: cd build && ctest -R "^t4$" --output-on-failure
+
+  Test_Car:
+    needs: Compilation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build && cmake --build build
+      - run: cd build && ctest -R "^t5$" --output-on-failure
+
+  Deployment:
+    needs: [Test_Add, Test_Sub, Test_Mul, Test_Div, Test_Car]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Déploiement de la solution"
